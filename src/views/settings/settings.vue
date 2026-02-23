@@ -1,22 +1,24 @@
 <template>
   <div>
     <tab-menu @activeTab="changeTab" />
-    <version v-if="validTab == 0" />
+     <amoControls v-if="validTab == 0" />
+    <!-- <version v-if="validTab == 0" />
     <cache v-if="validTab == 1" />
-    <product v-if="validTab == 2" />
+    <product v-if="validTab == 2" /> -->
     <!-- <tradingSession v-if="validTab == 3" /> -->
-    <holdingControls v-if="validTab == 3"/>
+    <!-- <holdingControls v-if="validTab == 3"/> -->
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import version from "./version.vue";
-import cache from "./cache.vue";
-import product from "./product.vue";
-import tradingSession from "./tradingSession.vue";
-import holdingControls from "./holdings/holdingControls.vue";
+// import version from "./version.vue";
+// import cache from "./cache.vue";
+// import product from "./product.vue";
+// import tradingSession from "./tradingSession.vue";
+// import holdingControls from "./holdings/holdingControls.vue";
+import amoControls from "./AMO/amoControls.vue";
 export default defineComponent({
-  components: { version, cache, product, tradingSession, holdingControls },
+  components: { amoControls },
   setup() {
     const validTab = ref(0);
     return { validTab };

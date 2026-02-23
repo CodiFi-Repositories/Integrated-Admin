@@ -6,14 +6,14 @@
     <!-- <payoutReport v-if="validTab == 0" /> -->
     <!-- <edis v-if="validTab == 1" /> -->
     <marketWatch v-if="validTab == 0" />
-    <bankDetails v-if="validTab == 1" />
+    <!-- <bankDetails v-if="validTab == 1" /> -->
     <!-- <Feedback v-if="validTab == 2" /> -->
-    <Sip v-if="validTab == 2" />
+    <Sip v-if="validTab == 1" />
     <!-- <loanDetails v-if="validTab == 5" /> -->
-    <orderCount v-if="validTab == 3" />
-    <fileUploadDetails v-if="validTab == 4" />
+    <orderCount v-if="validTab == 2" />
+    <!-- <fileUploadDetails v-if="validTab == 4" />
     <positionAvg v-if="validTab == 5" />
-    <paymentLogs v-if="validTab == 6" />
+    <paymentLogs v-if="validTab == 6" /> -->
   </div>
 </template>
 

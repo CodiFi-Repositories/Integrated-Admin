@@ -84,7 +84,16 @@ export const httpService = {
   modifyThematicBasket,
   deleteThematicBasket,
   getAllThematicBasket,
-  getSelectedThematicBasket
+  getSelectedThematicBasket,
+
+  //AMO Controls
+  getAmoSession,
+  getAmoControls,
+  updateAmoControls,
+  updateAmoSession,
+  createAmoSession,
+  deleteAmoSession,
+  getAmoHolidays,
 };
 
 function getHoliday() {
@@ -409,7 +418,7 @@ function tradeCallModify(payload: any) {
 }
 
 function getOrderCount(payload: any) {
-  return AXIOS.post("/adrest/report/getOrderCount", payload, headers(true));
+  return AXIOS.post("/adrest/report/getOrderDetails", payload, headers(true));
 }
 function getUserOrderCount(payload: any) {
   return AXIOS.post("/adrest/report/getUserOrderCount", payload, headers(true));
@@ -477,4 +486,26 @@ function getAllThematicBasket(payload: Object){
 }
 function getSelectedThematicBasket(basketId:any ) {
   return AXIOS.get(`research-rest/admin/thematic/get/${basketId}`)
+}
+
+function getAmoSession() {
+  return AXIOS.get("adrest/amo/getsession", headers(true));
+}
+function getAmoControls() {
+  return AXIOS.get("adrest/amo/getcontrol", headers(true));
+}
+function updateAmoControls(payload: Object) {
+  return AXIOS.post("adrest/amo/updatecontrol", payload, headers(true));
+}
+function updateAmoSession(payload: Object) {
+  return AXIOS.post("adrest/amo/updatesession", payload, headers(true));
+}
+function createAmoSession(payload: Object) {
+  return AXIOS.post("adrest/amo/addsession", payload, headers(true));
+}
+function deleteAmoSession(payload: Object) {
+  return AXIOS.post("adrest/amo/deletesession", payload, headers(true));
+}
+function getAmoHolidays() {
+  return AXIOS.get("adrest/amo/get/holidaydata", headers(true));
 }

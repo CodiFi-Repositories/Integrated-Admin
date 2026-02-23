@@ -3,19 +3,25 @@
     <div class="card p-4 border rounded bg-white shadow-sm">
       <form class="gap-4 flex" @submit.prevent="getDetails()">
         <div class="relative">
-          <VueDatePicker required class="max-w-[200px] !h-10" :auto-apply="true" v-model="monthPicker" month-picker :max-date="new Date()"/>
-          <!-- <div
-            @click="isMonthPicker = !isMonthPicker"
-            class="w-[200px] h-10 border border-gray-200 rounded-sm relative"
-          >
-            <span class="w-full h-full flex items-center pl-2 text-xs">
-              {{ selectedDate.month }} / {{ selectedDate.year }}
-            </span>
-
-            <div class="absolute h-5 w-5 right-4 top-2">
-              <icons :name="'datePicker'" class="w-5" :color="'#ffffff'" />
-            </div>
-          </div> -->
+         <div>
+          <label class="primaryColor pb-1 text-sm ml-2">Date</label>
+          <VDatePicker :max-date="today" v-model="ordersFromDate" is-required :popover="popover" :masks="{
+            input: 'DD/MM/YYYY',
+            modelValue: 'DD/MM/YYYY',
+          }" mode="date">
+            <template v-slot="{ togglePopover, inputValue, inputEvents }">
+              <div class="flex items-center justify-between min-w-[200px] h-10 border rounded cursor-pointer p-2">
+                <input :value="inputValue" placeholder="DD/MM/YYYY" v-on="inputEvents"
+                  class="min-w-[150px] h-9 ml-1 text-xs outline-none cursor-pointer" readonly />
+                <button type="button"
+                  class="flex justify-center mr-2 items-center bg-accent-100 hover:bg-accent-200 text-accent-700"
+                  @click="() => togglePopover()">
+                  <icons :name="'datePicker'" class="w-5" :color="'#ffffff'" />
+                </button>
+              </div>
+            </template>
+          </VDatePicker>
+        </div>
           <div class="absolute top-12">
             <!-- <MonthPicker
               @change="showDate"
@@ -178,11 +184,8 @@ import commonFunc from "../../mixins/commonFunc";
 export default defineComponent({
   name: "orderCount",
   setup() {
-    const today = new Date();
-    const monthPicker = ref({
-      month: new Date().getMonth(),
-      year:  new Date().getFullYear()
-    })
+     const today = new Date().toISOString().slice(0, 10);
+    const ordersFromDate = ref(today);
 
     const downloadLoader = ref(false);
     const maxDateToDate = ref("");
@@ -239,7 +242,7 @@ export default defineComponent({
       rowsPerPage,
       selectedDate,
       isMonthPicker,
-      monthPicker
+      ordersFromDate,
     };
   },
   components: {
@@ -257,13 +260,12 @@ export default defineComponent({
   mixins: [commonFunc],
   methods: {
     getDetails() {
-      if(!this.monthPicker || Object.keys(this.monthPicker).length == 0) return
+      
       const json = {
-        month: (this.monthPicker.month + 1).toString(),
-        year: this.monthPicker.year.toString(),
+       createdOn : this.ordersFromDate
       };
-      this.$store.dispatch("reports/getOrdersCount", json);
-      this.$store.dispatch("reports/getUserOrderCount", json).finally(() => {
+      // this.$store.dispatch("reports/getOrdersCount", json);
+      this.$store.dispatch("reports/getOrdersCount", json).finally(() => {
         let data = { count: 0, last: 0, from: 0 };
         data.count = this.rowsCount;
         data.last = this.rowsCount;

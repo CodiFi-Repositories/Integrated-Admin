@@ -9,14 +9,14 @@ const state = {
   reportTabs: [
     // { name: "Payout", id: 0, active: false },
     { name: "Market watch", id: 0, active: false },
-    { name: "Bank Details", id: 1, active: false },
+    // { name: "Bank Details", id: 1, active: false },
     // { name: "User Feedback", id: 3, active: false },
     { name: "SIP", id: 2, active: false },
     // { name: "Loan Details", id: 5, active: false },
     { name: "Order Count", id: 3, active: false },
-    { name: "File Upload Details", id: 4, active: false },
-    { name: "Position Average Details", id: 5, active: false },
-    { name: "Payment Logs", id: 6, active: false },
+    // { name: "File Upload Details", id: 4, active: false },
+    // { name: "Position Average Details", id: 5, active: false },
+    // { name: "Payment Logs", id: 6, active: false },
   ],
   vendorTabs: [{ name: "Vendor Authorization", id: 0, active: true }],
   contractTabs: [
@@ -27,11 +27,12 @@ const state = {
     { name: "Duplicate Symbols", id: 4, active: false },
   ],
   settingsTabs: [
-    { name: "Version", id: 0, active: true },
+    {name: 'AMO Controls', id: 0, active: true}
+    // { name: "Version", id: 0, active: true },
     // { name: "Cache", id: 1, active: false },
-    { name: "Product", id: 2, active: false },
-    {name: 'Holding Controls', id: 3, active: false},
-    { name: "Trading Session", id: 3, active: false }
+    // { name: "Product", id: 2, active: false },
+    // {name: 'Holding Controls', id: 3, active: false},
+    // { name: "Trading Session", id: 3, active: false }
   ],
   dashboardTabs: [
     { name: "User Status", id: 0, active: true },

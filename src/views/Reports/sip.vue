@@ -3,7 +3,7 @@
     <div class="card p-4 border rounded bg-white shadow-sm">
       <div class="gap-4 flex">
         <div>
-          <label class="primaryColor pb-1 text-sm ml-2">From Date</label>
+          <label class="primaryColor pb-1 text-sm ml-2">Date</label>
           <VDatePicker :max-date="today" v-model="fromDate" is-required :popover="popover" :masks="{
             input: 'DD/MM/YYYY',
             modelValue: 'DD/MM/YYYY',
@@ -21,7 +21,7 @@
             </template>
           </VDatePicker>
         </div>
-        <div>
+        <!-- <div>
           <label class="primaryColor pb-1 text-sm ml-2">To Date</label>
           <VDatePicker :max-date="today" :min-date="fromDate" v-model="toDate" is-required :popover="popover" :masks="{
             input: 'DD/MM/YYYY',
@@ -39,7 +39,7 @@
               </div>
             </template>
           </VDatePicker>
-        </div>
+        </div> -->
         <div class="flex gap-3 items-end">
           <button class="negativeBackground text-white h-10 w-[120px] cursor-pointer rounded text-xs"
             :disabled="getLoader" @click="getDetails()">
@@ -76,7 +76,7 @@
               <tbody class="text-sm">
                 <tr v-for="(i, id) in showData" :key="id" class="border-b">
                   <td class="truncate border-r text-center">
-                    {{ getDateString(new Date(i["orderTime"]), "d-M-y") }}
+                    {{ }}
                   </td>
                   <td class="truncate border-r text-center">
                     {{ i["userId"] }}
@@ -85,29 +85,29 @@
                     {{ i.quantity ? i.quantity : "-" }}
                   </td>
                   <td class="truncate border-r text-center">
-                    {{ i.Frequency }}
+                    {{ i.frequency }}
                   </td>
-                  <td class="truncate border-r text-center">{{ i.Mandate }}</td>
+                  <!-- <td class="truncate border-r text-center">{{ i.Mandate }}</td> -->
                   <td class="truncate border-r text-center">
-                    {{ i["No Of Installment"] ? i["No Of Installment"] : "-" }}
-                  </td>
-                  <td class="truncate border-r text-center">
-                    {{ i["Order No"] != "0" ? i["Order No"] : "-" }}
+                    {{ i["installments"] ? i["installments"] : "-" }}
                   </td>
                   <td class="truncate border-r text-center">
+                    {{ i["orderNo"] != "0" ? i["orderNo"] : "-" }}
+                  </td>
+                  <!-- <td class="truncate border-r text-center">
                     {{ i["Ref No"] }}
-                  </td>
-                  <td class="truncate border-r text-center">
+                  </td> -->
+                  <!-- <td class="truncate border-r text-center">
                     {{ i["Trans Mode"] }}
-                  </td>
-                  <td class="truncate border-r text-center">
+                  </td> -->
+                  <!-- <td class="truncate border-r text-center">
                     {{ i["Scheme"] }}
-                  </td>
+                  </td> -->
                   <td class="text-center border-r text-xs">
-                    {{ i["Remarks"] }}
+                    {{ i["orderStatus"] }}
                   </td>
                   <td class="text-center text-xs">
-                    {{ i["Placed By"] != "0" ? i["Placed By"] : "-" }}
+                    {{ i["initiatedBy"] != "0" ? i["initiatedBy"] : "-" }}
                   </td>
                 </tr>
               </tbody>
@@ -152,13 +152,13 @@ export default defineComponent({
       { name: "Client Code", csvKey: "Client Code" },
       { name: "Installment", csvKey: "Installment" },
       { name: "Frequency", csvKey: "Frequency" },
-      { name: "Mandate", csvKey: "Mandate" },
+      // { name: "Mandate", csvKey: "Mandate" },
       { name: "No Of Installment", csvKey: "No Of Installment" },
       { name: "Order No", csvKey: "Order No" },
-      { name: "Ref No", csvKey: "Ref No" },
-      { name: "Trans Mode", csvKey: "Trans Mode" },
-      { name: "Scheme", csvKey: "Scheme" },
-      { name: "Remarks", csvKey: "Remarks" },
+      // { name: "Ref No", csvKey: "Ref No" },
+      // { name: "Trans Mode", csvKey: "Trans Mode" },
+      // { name: "Scheme", csvKey: "Scheme" },
+      { name: "Status", csvKey: "orderStatus" },
       { name: "Placed By", csvKey: "Placed By" },
     ]);
 
@@ -206,7 +206,7 @@ export default defineComponent({
       }
     },
     getDetails() {
-      if (this.fromDate && this.toDate) {
+      if (this.fromDate ) {
         let json: Object = {
           createdOn: (window as any).formatDate(new Date(this.fromDate), 'D'),
           // toDate: this.toDate,

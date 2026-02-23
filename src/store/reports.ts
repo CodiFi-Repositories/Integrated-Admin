@@ -173,11 +173,13 @@ const actions = {
             response.status == 200 &&
             response.data.message.toString().trim() == "Success" &&
             response.data.message != "No Records Found" &&
-            response.data.result?.length
+            response.data.result?.length > 0 && 
+            response.data.result[0].data && 
+            response.data.result[0].data.length > 0
           ) {
             if (response.data.message.toString().trim() == "No Records Found") {
             } else {
-              response.data.result.forEach(function (item: any) {
+              response.data.result[0].data.forEach(function (item: any) {
                 delete item.dpTxnMode;
                 delete item.dpc;
                 delete item.euin;
@@ -225,14 +227,14 @@ const actions = {
               });
             }
 
-            for (let item of response.data.result) {
+            for (let item of response.data.result[0].data) {
               item["Order No"] =
                 item["Order No"] != "0" ? item["Order No"] : "-";
               item["Placed By"] =
                 item["Placed By"] != "0" ? item["Placed By"] : "-";
             }
 
-            commit("setSipDetails", response.data.result);
+            commit("setSipDetails", response.data.result[0].data);
           }
         },
         (error) => {
@@ -386,19 +388,23 @@ const actions = {
       .getOrderCount(payload)
       .then(
         (res: any) => {
-          var ordersCount = [];
+          var ordersData = [];
+          var ordersCount = 0
           if (
             res.status == 200 &&
             res.data.status == "Ok" &&
             res.data.message == "Success" &&
             res.data.result &&
-            res.data.result.length > 0
+            res.data.result.length > 0 && 
+            res.data.result[0].data && res.data.result[0].data.length > 0 
           ) {
-            ordersCount = res.data.result;
+            ordersData = res.data.result[0].data;
+            ordersCount = res.data.result[0].totalCount
           } else {
-            ordersCount = [];
+            ordersData = [];
           }
           commit("setOrdersCount", ordersCount);
+          commit("setUserOrdersCount", ordersData);
         },
         (err: any) => {
           errHandle.methods.errorHandle(err);
