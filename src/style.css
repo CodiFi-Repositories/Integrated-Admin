@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+html {
+  font-family: "Open Sans", sans-serif !important;
+}
+
+.primaryColor {
+  color: #070a26;
+}
+
+.secondaryColor {
+  color: #56585a;
+}
+
+.negativeBackground {
+  background-color: #005CB9 !important;
+}
+
+tr,
+td,
+th {
+  @apply border-collapse p-2;
+}
+
+.cScrollbar::-webkit-scrollbar {
+  /* display:none; */
+  width: 10px;
+  background-color: rgb(240, 234, 234);
+  scroll-behavior: smooth;
+}
+
+.cScrollbar::-webkit-scrollbar-thumb {
+  background: lightgray;
+  border-radius: 10px;
+}
+
+/* .mailLogTable .smsLogTable{
+  border-radius: none !important;
+  color: black !important;
+  background :white !important;
+  border-style: none !important;
+  border-color: none !important;
+  margin-left: 0% !important;
+  border-collapse: none !important;
+  background-color: none !important;
+  padding: none !important;
+
+} */
+
+/* th {
+  @apply border
+} */
+.activeImg {
+  filter: invert(21%) sepia(83%) saturate(2456%) hue-rotate(196deg) brightness(94%) contrast(106%);
+}
+
+.cancelBtn {
+  @apply min-h-[32px] px-4 text-sm rounded bg-[#ffffff] border border-[#a2a2a2] text-[#17181A] tracking-[0.2px] outline-none;
+}
+
+.scrollModifty::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollModifty::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 2;
+  background-color: rgba(209, 213, 219, var(--tw-bg-opacity));
+  border-radius: 9999px;
+}
+
+.scrollModifty::-webkit-scrollbar-track {
+  --tw-bg-opacity: 2;
+  background-color: rgba(75, 85, 99, var(--tw-bg-opacity));
+  --tw-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1),
+    0 4px 6px -2px rgba(216, 213, 213, 0.05);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
