@@ -1,10 +1,18 @@
 import axios from "axios";
 import { env } from "../env";
+import store from "../store";
 // import store from "../store";
 
 const AXIOS = axios.create({
   baseURL: env().BASEURL,
 });
+
+ 
+function mwHeaders() {
+  return {
+    headers: { Authorization: "Bearer " + store.state.sessionId },
+  };
+}
 export const httpService = {
   getUserBankDetails,
   getMarketWatchData,
@@ -94,6 +102,10 @@ export const httpService = {
   createAmoSession,
   deleteAmoSession,
   getAmoHolidays,
+
+  getPredefinedMw,
+  deleteAdminWatchScrips,
+  addWatchScrips,
 };
 
 function getHoliday() {
@@ -302,7 +314,7 @@ function addUserKeyCloak(payload: any) {
 
 function ssoLogin(payload: any) {
   return AXIOS.post(
-    `auth/sso/vendor/auth/getUserDetails`,
+    `auth-rest/admin/pwd/validatenew`,
     payload,
     headers(true)
   );
@@ -508,4 +520,14 @@ function deleteAmoSession(payload: Object) {
 }
 function getAmoHolidays() {
   return AXIOS.get("adrest/amo/get/holidaydata", headers(true));
+}
+
+function getPredefinedMw(payload:Object) {
+  return AXIOS.post("mw-new/pre-def/mw/get", payload, mwHeaders());
+}
+function deleteAdminWatchScrips(payload: any) {
+  return AXIOS.post("mw-new/pre-def/mw/deletescrips", payload, mwHeaders());
+}
+function addWatchScrips(payload: any) {
+  return AXIOS.post("mw-new/pre-def/mw/addscrips", payload, mwHeaders());
 }

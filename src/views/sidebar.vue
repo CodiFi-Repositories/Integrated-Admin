@@ -55,6 +55,14 @@ export default {
           active: false,
           svg: "orders",
         },
+        {
+          name: "Content",
+          route: "/content",
+          icon: "content",
+          status: "active",
+          active: false,
+          svg: "orders",
+        },
         // {
         //  name: "File Upload",
         //  route: "/fileupload",

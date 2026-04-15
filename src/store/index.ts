@@ -17,6 +17,7 @@ import { NullUndefined } from "../_helpers/nullUndefinedCheck.js";
 import router from "../router/index.js";
 import thematicBasket from "./thematicBasket.ts";
 import amoControls from "./amoControls";
+import content from "./content.ts";
 const store = createStore({
   state: {
     buildDate: "11_02_2025_13_40",
@@ -112,7 +113,8 @@ const store = createStore({
     fileupload,
     holdingControls,
     thematicBasket,
-    amoControls
+    amoControls,
+    content,
   },
 
   mutations: {

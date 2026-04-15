@@ -1,6 +1,5 @@
 import { httpService } from "../services/httpservices";
-import router from "../router/index";
-import { env } from "../env";
+import router from "../router/index"; 
 import errHandle from "../handleError/errorHandling.ts";
 
 const auth: any = {
@@ -15,26 +14,27 @@ const auth: any = {
   },
   actions: {
     async getData({ commit }: any, payload: any) {
-      commit("setErrorMessage", null);
-      let json = {
-        vendor: env().APPCODE,
-        authCode: payload,
-      };
+      commit("setErrorMessage", null); 
       await httpService
-        .ssoLogin(json)
+        .ssoLogin(payload)
         .then((response) => {
-          if (response.data.message.toString().trim() === "Success") {
-            localStorage.setItem("IntegratedClientId", response.data.result[0].clientId);
+           
+          if (response.data.message.toString().trim() === "Success" && response.data.result && response.data.result.length > 0) {
+            let userRole = response.data.result[0].kcRole ? response.data.result[0].kcRole : 'admin'
+            localStorage.setItem("IntegratedClientId", userRole);
             localStorage.setItem(
               "IntegratedSessionId",
               response.data.result[0].accessToken
             );
-            commit("setUserId", response.data.result[0].clientId, {
+            commit("setUserId", userRole, {
               root: true,
             });
             commit("setSessionId", response.data.result[0].accessToken, {
               root: true,
             });
+            // localStorage.setItem("IntegratedClientId", "admin");
+        // this.$store.commit("setUserId", "admin");
+        // this.$router.push('/dashboard')
             router.push("dashboard");
           } else if (response.data.message) {
             commit("setErrorMessage", response.data.message);

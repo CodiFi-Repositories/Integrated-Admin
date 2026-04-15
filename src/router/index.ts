@@ -45,6 +45,8 @@ const addOrEditUser = () =>
     import(/* webpackChunkName: "vendors" */ "../views/Research/researchcall.vue");
   
 const addHolidays = () => import("../views/settings/add-holidays.vue");
+
+const content = () => import("../views/content/content.vue");
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
@@ -70,6 +72,7 @@ const router = createRouter({
           component: addOrEditUser,
         },
         { path: "/addholiday", name: "addholiday", component: addHolidays },
+        { path: "/content", name: "content", component: content },
       ],
     },
   ],

@@ -124,10 +124,14 @@ export default {
       window.location.href = `${env().SSOREDIRECTURL}?appcode=${env().APPCODE}`;
     },
     loginSubmit() {
-      if(this.userId && this.password && this.userId == "admin@codifi.in" && this.password == "Codifi&8"){
-        localStorage.setItem("IntegratedClientId", "admin");
-        this.$store.commit("setUserId", "admin");
-        this.$router.push('/dashboard')
+      if(this.userId && this.password ){
+        let json = {
+    "userId": this.userId,
+    "password": this.password,
+    "source": "web"
+}
+        this.$store.dispatch("auth/getData", json)
+        
       }else{
         this.errorUserId = 'Enter your valid Email Id'
         this.errorPassword = 'Enter your valid password'
