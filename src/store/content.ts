@@ -50,6 +50,28 @@ const actions = {
         commit("setLoader", false);
       });
   },
+
+  async createPredefinedMw({ commit, dispatch }: any, payload: any) {
+    commit("setLoader", true);
+    await httpService
+      .createPredefinedMw({
+    "mwName": payload
+})
+      .then(
+        (res: any) => {
+          if (res.status == 200 && res.data.message == "Success") {
+            dispatch("getPredefinedMw", "reload");
+          }
+        },
+        (error) => {
+          errorHandling.methods.errorHandle(error);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+  },
+
   async deleteScrips({ commit, dispatch }: any, payload: any) {
     commit("setLoader", true);
     await httpService

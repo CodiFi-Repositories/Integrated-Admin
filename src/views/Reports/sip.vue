@@ -1,17 +1,25 @@
 <template>
   <div class="p-4 h-full">
     <div class="card p-4 border rounded bg-white shadow-sm">
-      <div class="gap-4 flex">
+      <div class="gap-4 flex flex-wrap">
         <div>
-          <label class="primaryColor pb-1 text-sm ml-2">Date</label>
-          <VDatePicker :max-date="today" v-model="fromDate" is-required :popover="popover" :masks="{
+          <label class="primaryColor pb-1 text-sm ml-2">User ID</label>
+          <div class="flex items-center min-w-[160px] h-10 border rounded p-2">
+            <input v-model="userId" placeholder="Enter User ID"
+              class="w-full h-9 ml-1 text-xs outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="primaryColor pb-1 text-sm ml-2">From Date</label>
+          <VDatePicker :max-date="today" v-model="fromDate" @update:modelValue="onFromDateChange" is-required :popover="popover" :masks="{
             input: 'DD/MM/YYYY',
             modelValue: 'DD/MM/YYYY',
           }" mode="date">
             <template v-slot="{ togglePopover, inputValue, inputEvents }">
-              <div class="flex items-center justify-between min-w-[200px] h-10 border rounded cursor-pointer p-2">
+              <div class="flex items-center justify-between min-w-[180px] h-10 border rounded cursor-pointer p-2">
                 <input :value="inputValue" placeholder="DD/MM/YYYY" v-on="inputEvents"
-                  class="min-w-[150px] h-9 ml-1 text-xs outline-none cursor-pointer" readonly />
+                  class="min-w-[130px] h-9 ml-1 text-xs outline-none cursor-pointer" readonly />
                 <button type="button"
                   class="flex justify-center mr-2 items-center bg-accent-100 hover:bg-accent-200 text-accent-700"
                   @click="() => togglePopover()">
@@ -21,16 +29,17 @@
             </template>
           </VDatePicker>
         </div>
-        <!-- <div>
+
+        <div>
           <label class="primaryColor pb-1 text-sm ml-2">To Date</label>
-          <VDatePicker :max-date="today" :min-date="fromDate" v-model="toDate" is-required :popover="popover" :masks="{
+          <VDatePicker :min-date="fromDate" :max-date="today" v-model="toDate" is-required :popover="popover" :masks="{
             input: 'DD/MM/YYYY',
             modelValue: 'DD/MM/YYYY',
-          }" mode="date" :disabled-dates="!fromDate">
+          }" mode="date">
             <template v-slot="{ togglePopover, inputValue, inputEvents }">
-              <div class="flex items-center justify-between min-w-[200px] h-10 border rounded cursor-pointer p-2">
+              <div class="flex items-center justify-between min-w-[180px] h-10 border rounded cursor-pointer p-2">
                 <input :value="inputValue" placeholder="DD/MM/YYYY" v-on="inputEvents"
-                  class="min-w-[150px] h-9 ml-1 text-xs outline-none cursor-pointer" readonly />
+                  class="min-w-[130px] h-9 ml-1 text-xs outline-none cursor-pointer" readonly />
                 <button type="button"
                   class="flex justify-center mr-2 items-center bg-accent-100 hover:bg-accent-200 text-accent-700"
                   @click="() => togglePopover()">
@@ -39,7 +48,32 @@
               </div>
             </template>
           </VDatePicker>
-        </div> -->
+        </div>
+
+        <div class="flex flex-col">
+          <label class="primaryColor pb-1 text-sm ml-2">Frequency</label>
+          <select v-model="frequency"
+            class="min-w-[160px] h-10 border rounded px-3 text-xs outline-none cursor-pointer">
+            <option value="">All</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="fortnighty">Fortnighty</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="primaryColor pb-1 text-sm ml-2">Status</label>
+          <select v-model="status"
+            class="min-w-[160px] h-10 border rounded px-3 text-xs outline-none cursor-pointer">
+            <option value="">All</option>
+            <option value="Active">Active</option>
+            <option value="paused">Paused</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
         <div class="flex gap-3 items-end">
           <button class="negativeBackground text-white h-10 w-[120px] cursor-pointer rounded text-xs"
             :disabled="getLoader" @click="getDetails()">
@@ -61,6 +95,9 @@
       </div>
     </div>
 
+    <sipOrderDialog :show="showDialog" :loading="dialogLoader" :executed="getSipOrderDetails?.executed || []"
+      :upcoming="getSipOrderDetails?.upcoming || []" @close="closeDialog" />
+
     <div class="pt-4 rounded">
       <div class="card p-5 border rounded bg-white shadow-sm" v-if="getSipDetails?.length">
         <div>
@@ -74,40 +111,63 @@
                 </tr>
               </thead>
               <tbody class="text-sm">
-                <tr v-for="(i, id) in showData" :key="id" class="border-b">
+                <tr v-for="(i, id) in showData" :key="id" class="border-b cursor-pointer hover:bg-gray-50"
+                  @click="openDialog(i)">
+                 
                   <td class="truncate border-r text-center">
-                    {{ }}
+                    {{ i["userId"] || "" }}
                   </td>
                   <td class="truncate border-r text-center">
-                    {{ i["userId"] }}
+                    {{ i["symbol"] || "" }}
                   </td>
                   <td class="truncate border-r text-center">
-                    {{ i.quantity ? i.quantity : "-" }}
+                    {{ i["exchange"] || "" }}
                   </td>
                   <td class="truncate border-r text-center">
-                    {{ i.frequency }}
-                  </td>
-                  <!-- <td class="truncate border-r text-center">{{ i.Mandate }}</td> -->
-                  <td class="truncate border-r text-center">
-                    {{ i["installments"] ? i["installments"] : "-" }}
+                    {{ i["frequency"] || "" }}
                   </td>
                   <td class="truncate border-r text-center">
-                    {{ i["orderNo"] != "0" ? i["orderNo"] : "-" }}
+                    {{ i["sipType"] || "" }}
                   </td>
-                  <!-- <td class="truncate border-r text-center">
-                    {{ i["Ref No"] }}
-                  </td> -->
-                  <!-- <td class="truncate border-r text-center">
-                    {{ i["Trans Mode"] }}
-                  </td> -->
-                  <!-- <td class="truncate border-r text-center">
-                    {{ i["Scheme"] }}
-                  </td> -->
+                  <td class="truncate border-r text-center">
+                    {{ i["sipAmount"] || "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["sipQuantity"] || "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["capPrice"] || "" }}
+                  </td>
+                  
+                  <td class="truncate border-r text-center">
+                    {{ i["duration"] || "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["startDate"] ? new Date(i["startDate"]).toLocaleDateString("en-GB") : "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["endDate"] ? new Date(i["endDate"]).toLocaleDateString("en-GB") : "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["executionCount"] ?? "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["pendingInstallments"] ?? "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["failedInstallments"] ?? "" }}
+                  </td>
                   <td class="text-center border-r text-xs">
-                    {{ i["orderStatus"] }}
+                    {{ i["sipStatus"] || "" }}
+                  </td>
+                  <td class="truncate border-r text-center">
+                    {{ i["initiatedBy"] || "" }}
                   </td>
                   <td class="text-center text-xs">
-                    {{ i["initiatedBy"] != "0" ? i["initiatedBy"] : "-" }}
+                    {{ i["modifiedBy"] || "" }}
+                  </td>
+                   <td class="truncate border-r text-center">
+                    {{ i["createdAt"] ? new Date(i["createdAt"]).toLocaleDateString("en-GB") : "" }}
                   </td>
                 </tr>
               </tbody>
@@ -129,37 +189,48 @@ import commonFunc from "../../mixins/commonFunc";
 import noData from "../../components/no-data.vue";
 import Icons from "../../components/icons.vue";
 import commonPagination from "../../components/commonPagination.vue";
+import sipOrderDialog from "./sipOrderDialog.vue";
 export default defineComponent({
   components: {
     noData,
     Icons,
     commonPagination,
+    sipOrderDialog,
   },
   mixins: [commonFunc],
   name: "sip",
   setup() {
     const today = new Date().toISOString().slice(0, 10);
+    const userId = ref("");
     const fromDate = ref(today);
     const toDate = ref(today);
     const maxDateToDate = ref("");
+    const frequency = ref("");
+    const status = ref("");
     const submitClicked = ref();
     const popover = ref({
       visibility: "click",
       placement: "bottom-start",
     });
-    const header = ref([
-      { name: "Created On", csvKey: "orderTime" },
-      { name: "Client Code", csvKey: "Client Code" },
-      { name: "Installment", csvKey: "Installment" },
-      { name: "Frequency", csvKey: "Frequency" },
-      // { name: "Mandate", csvKey: "Mandate" },
-      { name: "No Of Installment", csvKey: "No Of Installment" },
-      { name: "Order No", csvKey: "Order No" },
-      // { name: "Ref No", csvKey: "Ref No" },
-      // { name: "Trans Mode", csvKey: "Trans Mode" },
-      // { name: "Scheme", csvKey: "Scheme" },
-      { name: "Status", csvKey: "orderStatus" },
-      { name: "Placed By", csvKey: "Placed By" },
+    const header = ref([      
+      { name: "Client Code", csvKey: "userId" },
+      { name: "Symbol", csvKey: "symbol" },
+      { name: "Exchange", csvKey: "exchange" },
+       { name: "Frequency", csvKey: "frequency" },
+      { name: "SIP Type", csvKey: "sipType" },
+      { name: "SIP Amount", csvKey: "sipAmount" },
+      { name: "SIP Quantity", csvKey: "sipQuantity" },
+      { name: "Cap Price", csvKey: "capPrice" }, 
+      { name: "Installment", csvKey: "duration" },
+      { name: "Start Date", csvKey: "startDate" },
+      { name: "End Date", csvKey: "endDate" },
+      { name: "Execution Count", csvKey: "executionCount" },
+      { name: "Pending Installments", csvKey: "pendingInstallments" },
+      { name: "Failed Installments", csvKey: "failedInstallments" },
+      { name: "Status", csvKey: "sipStatus" },
+      { name: "Initiated By", csvKey: "initiatedBy" },
+      { name: "Modified By", csvKey: "modifiedBy" },
+      { name: "Created On", csvKey: "createdAt" },
     ]);
 
     const disabledDates = ref([
@@ -169,6 +240,8 @@ export default defineComponent({
         },
       },
     ]);
+    const showDialog = ref(false);
+    const dialogLoader = ref(false);
     const rowsCount = ref(20);
     const showData = ref();
     const rowsPerPage = ref([
@@ -182,8 +255,11 @@ export default defineComponent({
 
     return {
       header,
+      userId,
       fromDate,
       toDate,
+      frequency,
+      status,
       popover,
       disabledDates,
       maxDateToDate,
@@ -192,9 +268,28 @@ export default defineComponent({
       rowsCount,
       showData,
       rowsPerPage,
+      showDialog,
+      dialogLoader,
     };
   },
   methods: {
+    openDialog(row: any) {
+      this.showDialog = true;
+      this.dialogLoader = true;
+      this.$store.dispatch("reports/getSipOrderDetails", row.id)
+        .finally(() => {
+          this.dialogLoader = false;
+        });
+    },
+    closeDialog() {
+      this.showDialog = false;
+      this.$store.commit("reports/setSipOrderDetails", { executed: [], upcoming: [] });
+    },
+    onFromDateChange(val: string) {
+      if (this.toDate && val > this.toDate) {
+        this.toDate = val;
+      }
+    },
     getTableData(data: any) {
       this.rowsCount = data.count;
       let fromIndex = data.from;
@@ -206,10 +301,13 @@ export default defineComponent({
       }
     },
     getDetails() {
-      if (this.fromDate ) {
+      if (this.fromDate && this.toDate) {
         let json: Object = {
-          createdOn: (window as any).formatDate(new Date(this.fromDate), 'D'),
-          // toDate: this.toDate,
+          userId: this.userId,
+          startDate: (window as any).formatDate(new Date(this.fromDate), 'D'),
+          endDate: (window as any).formatDate(new Date(this.toDate), 'D'),
+          frequency: this.frequency,
+          status: this.status
         };
 
         this.$store.dispatch("reports/getSipDetails", json).finally(() => {
@@ -225,13 +323,13 @@ export default defineComponent({
         this.$notify({
           group: "auth",
           type: "error",
-          title: `Select a from Date and To date`,
+          title: `Select a From Date and To Date`,
         });
       }
     },
   },
   computed: {
-    ...mapGetters("reports", ["getSipDetails", "getLoader"]),
+    ...mapGetters("reports", ["getSipDetails", "getLoader", "getSipOrderDetails"]),
     ...mapState("accessLog", ["FeedbackDetails", "downloadLoader"]),
   },
   unmounted() {

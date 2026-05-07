@@ -49,6 +49,9 @@ export const httpService = {
   updateSettingsAction,
   resetCache,
   getSipDetails,
+  getSipOrderDetails,
+  getSipLogs,
+  getSipCountDetails,
   getHousingLoanData,
   getPropertyLoanData,
   getSecuritiesLoanData,
@@ -106,6 +109,9 @@ export const httpService = {
   getPredefinedMw,
   deleteAdminWatchScrips,
   addWatchScrips,
+  getUserSipDetails,
+
+  createPredefinedMw
 };
 
 function getHoliday() {
@@ -332,10 +338,25 @@ function resetCache(jsonObj: any) {
 
 function getSipDetails(payload: any) {
   return AXIOS.post(
-    `adrest/report/getSipDetails`,
+    `adrest/report/get`,
     payload,
     headers(true)
   );
+}
+
+function getSipOrderDetails(payload: any) {
+  return AXIOS.get(
+    `adrest/report/info/${payload}`,
+    headers(true)
+  );
+}
+
+function getSipLogs(payload: any) {
+  return AXIOS.post(`adrest/report/getSipLogs`, payload, headers(true));
+}
+
+function getSipCountDetails() {
+  return AXIOS.get(`adrest/report/getSipCountDetails`, headers(true));
 }
 
 function getHousingLoanData(payload: any) {
@@ -530,4 +551,13 @@ function deleteAdminWatchScrips(payload: any) {
 }
 function addWatchScrips(payload: any) {
   return AXIOS.post("mw-new/pre-def/mw/addscrips", payload, mwHeaders());
+}
+
+function getUserSipDetails() {
+  return AXIOS.get("adrest/report/getUserSipDetails", headers(true));
+}
+
+
+function createPredefinedMw(payload:Object) {
+  return AXIOS.post("mw-new/pre-def/mw/create", payload, mwHeaders());
 }

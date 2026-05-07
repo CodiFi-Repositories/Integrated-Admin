@@ -8,9 +8,10 @@
     <marketWatch v-if="validTab == 0" />
     <!-- <bankDetails v-if="validTab == 1" /> -->
     <!-- <Feedback v-if="validTab == 2" /> -->
-    <Sip v-if="validTab == 1" />
+    <!-- <Sip v-if="validTab == 1" /> -->
     <!-- <loanDetails v-if="validTab == 5" /> -->
     <orderCount v-if="validTab == 2" />
+     <SipDashboard v-if="validTab == 1" />
     <!-- <fileUploadDetails v-if="validTab == 4" />
     <positionAvg v-if="validTab == 5" />
     <paymentLogs v-if="validTab == 6" /> -->
@@ -32,6 +33,8 @@ import orderCount from "./orderCount.vue";
 import fileUploadDetails from "./fileUploadDetails.vue";
 import positionAvg from "./positionAvg.vue";
 import paymentLogs from "./paymentLogs.vue";
+import SipDashboard from "./sipLogs.vue";
+
 export default defineComponent({
   setup() {
     const validTab = ref(0);
@@ -51,6 +54,7 @@ export default defineComponent({
     fileUploadDetails,
     positionAvg,
     paymentLogs,
+    SipDashboard
   },
   methods: {
     changeTab(data: any) {

@@ -14,6 +14,7 @@ const state = {
     { name: "SIP", id: 2, active: false },
     // { name: "Loan Details", id: 5, active: false },
     { name: "Order Count", id: 3, active: false },
+    //  { name: "SIP Dashboard", id: 2, active: false },
     // { name: "File Upload Details", id: 4, active: false },
     // { name: "Position Average Details", id: 5, active: false },
     // { name: "Payment Logs", id: 6, active: false },
