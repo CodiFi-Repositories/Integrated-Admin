@@ -544,7 +544,7 @@ function getAmoHolidays() {
 }
 
 function getPredefinedMw(payload:Object) {
-  return AXIOS.post("mw-new/pre-def/mw/get", payload, mwHeaders());
+  return AXIOS.post("mw-new/advance/mw", payload, mwHeaders());
 }
 function deleteAdminWatchScrips(payload: any) {
   return AXIOS.post("mw-new/pre-def/mw/deletescrips", payload, mwHeaders());

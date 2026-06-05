@@ -27,14 +27,19 @@ const actions = {
     commit("setLoader", true);
     await httpService
       .getPredefinedMw({
-    "predefined": true
+    "defaultMw": false,
+    "source": "WEB",
+    "preDef": true,
+    "advFlag": true,
+    "lstsFlag": true
 })
       .then(
         (res: any) => {
           if (res.status == 200 && res.data.message == "Success") {
-            commit("setAdminWatchList", res.data.result);
-            if (res.data.result?.length) {
-              res.data.result.forEach((el: any) => {
+            const filteredResult = res.data.result?.filter((el: any) => el.mwName !== 'My Stocks') ?? [];
+            commit("setAdminWatchList", filteredResult);
+            if (filteredResult?.length) {
+              filteredResult.forEach((el: any) => {
                 if (el.hasOwnProperty("isEnabled") && el.mwId == 4) {
                   commit("setIsSmartWatch", el.isEnabled == 1);
                 }

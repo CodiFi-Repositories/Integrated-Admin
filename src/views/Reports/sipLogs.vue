@@ -686,8 +686,8 @@ export default defineComponent({
       };
       if (this.fromDate && this.activeFilter !== 'Today') json.startDate = (window as any).formatDate(new Date(this.fromDate), 'D');
       if (this.toDate) json.endDate = (window as any).formatDate(new Date(this.toDate), 'D');
-      if (this.createdOnFrom) json.createdOnFrom = (window as any).formatDate(new Date(this.createdOnFrom), 'D');
-      if (this.createdOnTo) json.createdOnTo = (window as any).formatDate(new Date(this.createdOnTo), 'D');
+      if (this.createdOnFrom  && this.activeFilter == 'Today') json.createdOnFrom = (window as any).formatDate(new Date(this.createdOnFrom), 'D');
+      if (this.createdOnTo  && this.activeFilter == 'Today') json.createdOnTo = (window as any).formatDate(new Date(this.createdOnTo), 'D');
       this.$store.dispatch("reports/getSipDetails", json).finally(() => {
         this.submitted = true;
         this.getTableData({ from: 0, last: this.rowsCount, count: this.rowsCount });
