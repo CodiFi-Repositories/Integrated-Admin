@@ -529,7 +529,7 @@ export default defineComponent({
     };
   },
   computed: {
-    ...mapGetters("reports", ["getSipDetails", "getLoader", "getSipOrderDetails", "getSipCountDetails", "getUserSipDetails", "getSipDialogDetails"]),
+...mapGetters("sipLogs", ["getSipDetails", "getLoader", "getSipOrderDetails", "getSipCountDetails", "getUserSipDetails", "getSipDialogDetails"]),
 
     summary(): any {
       const d = (this as any).getSipCountDetails;
@@ -591,14 +591,14 @@ export default defineComponent({
     openDialog(row: any) {
       this.showDialog = true;
       this.dialogLoader = true;
-      this.$store.dispatch("reports/getSipOrderDetails", row.id).finally(() => {
+      this.$store.dispatch("sipLogs/getSipOrderDetails", row.id).finally(() => {
         this.dialogLoader = false;
       });
     },
 
     closeDialog() {
       this.showDialog = false;
-      this.$store.commit("reports/setSipOrderDetails", { executed: [], upcoming: [] });
+      this.$store.commit("sipLogs/setSipOrderDetails", { executed: [], upcoming: [] });
     },
 
     setFilter(f: string) { 
@@ -627,7 +627,7 @@ export default defineComponent({
         return;
       }
       if (f === 'Unique User') {
-        this.$store.dispatch("reports/getUserSipDetails").finally(() => {
+        this.$store.dispatch("sipLogs/getUserSipDetails").finally(() => {
           const last = typeof this.rowsCount === "number" ? this.rowsCount : (this as any).filteredData.length;
           this.showData = (this as any).filteredData.slice(0, last);
         });
@@ -660,7 +660,7 @@ export default defineComponent({
       this.sipDialogTitle = type === 'active' ? 'Active SIP' : 'Total SIP';
       this.showSipDialog = true;
       this.sipDialogLoader = true;
-      this.$store.commit('reports/setSipDialogDetails', []);
+      this.$store.commit('sipLogs/setSipDialogDetails', []);
       const payload = type === 'active'
         ? { userId: data.userId, startDate: '', endDate: (window as any).formatDate(new Date(this.today), 'D'), frequency: '', sipStatus: 'Active' }
         : { userId: data.userId, startDate: '', endDate: (window as any).formatDate(new Date(this.today), 'D'), frequency: '', sipStatus: '' };
@@ -671,7 +671,7 @@ export default defineComponent({
 
     closeSipDetailDialog() {
       this.showSipDialog = false;
-      this.$store.commit('reports/setSipDialogDetails', []);
+      this.$store.commit('sipLogs/setSipDialogDetails', []);
     },
 
     handleSubmit() {
@@ -688,20 +688,20 @@ export default defineComponent({
       if (this.toDate) json.endDate = (window as any).formatDate(new Date(this.toDate), 'D');
       if (this.createdOnFrom  && this.activeFilter == 'Today') json.createdOnFrom = (window as any).formatDate(new Date(this.createdOnFrom), 'D');
       if (this.createdOnTo  && this.activeFilter == 'Today') json.createdOnTo = (window as any).formatDate(new Date(this.createdOnTo), 'D');
-      this.$store.dispatch("reports/getSipDetails", json).finally(() => {
+      this.$store.dispatch("sipLogs/getSipDetails", json).finally(() => {
         this.submitted = true;
         this.getTableData({ from: 0, last: this.rowsCount, count: this.rowsCount });
       });
     },
   },
   mounted() {
-    this.$store.dispatch("reports/getSipCountDetails");
+    this.$store.dispatch("sipLogs/getSipCountDetails");
     this.setFilter('Today')
   },
   unmounted() {
-    this.$store.commit("reports/setSipDetails", []);
-    this.$store.commit("reports/setSipCountDetails", null);
-    this.$store.commit("reports/setSipDialogDetails", []);
+    this.$store.commit("sipLogs/setSipDetails", []);
+    this.$store.commit("sipLogs/setSipCountDetails", null);
+    this.$store.commit("sipLogs/setSipDialogDetails", []);
   },
 });
 </script>

@@ -10,6 +10,7 @@ import vendor from "./vendors";
 import version from "./version";
 import auth from "./ssoLogin";
 import reports from "./reports";
+import sipLogs from "./sipLogs";
 import tradecall from "./tradecalls.js";
 import fileupload from "./fileUpload.ts";
 import holdingControls from "./holdingControls.ts";
@@ -99,6 +100,7 @@ const store = createStore({
   },
   modules: {
     reports,
+    sipLogs,
     accessLog,
     tabs,
     dash,

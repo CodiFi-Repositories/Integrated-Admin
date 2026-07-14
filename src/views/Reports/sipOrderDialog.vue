@@ -33,6 +33,7 @@
                 <thead class="sticky top-0 bg-gray-50 z-10">
                   <tr class="border-b">
                     <th class="w-1/5 px-3 py-2 text-left border-r">Qty</th>
+                     <th class="w-1/5 px-3 py-2 text-left border-r">Symbol</th>
                     <th class="w-1/5 px-3 py-2 text-left border-r">Date</th>
                     <th class="w-1/5 px-3 py-2 text-left border-r">Status</th>
                     <th class="w-1/5 px-3 py-2 text-left border-r">Amount</th>
@@ -42,6 +43,7 @@
                 <tbody>
                   <tr v-for="(row, idx) in currentTabData" :key="idx" class="border-b">
                     <td class="w-1/5 px-3 py-2 border-r text-left">{{ row.qty || "" }}</td>
+                    <td class="w-1/5 px-3 py-2 border-r text-left whitespace-nowrap">{{ row.symbol || "" }}</td>
                     <td class="w-1/5 px-3 py-2 border-r text-left">{{ row.date ? new Date(row.date).toLocaleDateString("en-GB") : "" }}</td>
                     <td class="w-1/5 px-3 py-2 border-r text-left">{{ row.status || "" }}</td>
                     <td class="w-1/5 px-3 py-2 border-r text-left">{{ row.price ? row.price : '' }}</td>
