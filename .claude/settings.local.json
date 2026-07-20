@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "mcp__claude_ai_Figma__get_design_context"
+      "mcp__claude_ai_Figma__get_design_context",
+      "Bash(curl -s -X POST \"https://webtrade.integrated.investments/adrest/report/cumulativeBasketReport\" -H \"Content-Type: application/json\" -d '{\"userId\":\"181311\"}' --max-time 30)",
+      "Bash(curl -s -w \"\\\\nHTTP_STATUS:%{http_code}\\\\n\" -X POST \"https://webtrade.integrated.investments/adrest/report/cumulativeBasketReport\" -H \"Content-Type: application/json\" -d '{\"userId\":\"181311\"}' --max-time 30)",
+      "Bash(npx vite *)",
+      "Bash(curl -s -X POST \"https://webtrade.integrated.investments/adrest/report/cumulativeBasketReport\" -H \"Content-Type: application/json\" -d '{\"userId\":\"599210\"}' --max-time 30)",
+      "Bash(node repro_panel.js)",
+      "Bash(node repro_reset.js)"
     ]
   }
 }

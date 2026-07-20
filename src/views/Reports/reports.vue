@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="validTab == 3 ? 'h-full flex flex-col' : ''">
     <tab-menu @activeTab="changeTab" />
     <!-- <holdings v-if="validTab == 'Holdings'" />
     <positions v-if="validTab == 'Positions'" /> -->
@@ -12,6 +12,7 @@
     <!-- <loanDetails v-if="validTab == 5" /> -->
     <orderCount v-if="validTab == 2" />
      <SipDashboard v-if="validTab == 1" />
+    <researchBasket v-if="validTab == 3" />
     <!-- <fileUploadDetails v-if="validTab == 4" />
     <positionAvg v-if="validTab == 5" />
     <paymentLogs v-if="validTab == 6" /> -->
@@ -34,6 +35,7 @@ import fileUploadDetails from "./fileUploadDetails.vue";
 import positionAvg from "./positionAvg.vue";
 import paymentLogs from "./paymentLogs.vue";
 import SipDashboard from "./sipLogs.vue";
+import researchBasket from "./researchBasket/researchBasket.vue";
 
 export default defineComponent({
   setup() {
@@ -54,7 +56,8 @@ export default defineComponent({
     fileUploadDetails,
     positionAvg,
     paymentLogs,
-    SipDashboard
+    SipDashboard,
+    researchBasket
   },
   methods: {
     changeTab(data: any) {

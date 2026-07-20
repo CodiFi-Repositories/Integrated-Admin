@@ -111,7 +111,11 @@ export const httpService = {
   addWatchScrips,
   getUserSipDetails,
 
-  createPredefinedMw
+  createPredefinedMw,
+
+  //Research Basket Report
+  getCumulativeBasketReport,
+  getDaywiseBasketReport,
 };
 
 function getHoliday() {
@@ -473,6 +477,20 @@ function getPositionAvgDetails(payload: any) {
 }
 function getPaymentLogs(payload: any) {
   return AXIOS.post("adrest/report/getPaymentLog", payload, headers(true));
+}
+function getCumulativeBasketReport(payload: any) {
+  return AXIOS.post(
+    "adrest/report/cumulativeBasketReport",
+    payload,
+    headers(true)
+  );
+}
+function getDaywiseBasketReport(payload: any) {
+  return AXIOS.post(
+    "adrest/report/dayWiseBasketReport",
+    payload,
+    headers(true)
+  );
 }
 function getOrderLogs() {
   return AXIOS.get(`/adrest/log/getorderlogs`, headers(true));

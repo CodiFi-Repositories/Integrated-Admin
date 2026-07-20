@@ -23,6 +23,9 @@ const state = {
   paymentLogs: [],
   paymentResponseDialog: false,
   paymentResponseRowData: "",
+  activeBasketTab: 0,
+  cumulativeBasketData: null,
+  daywiseBasketData: null,
 };
 
 const mutations = {
@@ -99,6 +102,15 @@ const mutations = {
   setPaymentResponseDialog(state: any, payload: any) {
     state.paymentResponseDialog = payload.isOpen;
     state.paymentResponseRowData = payload.data;
+  },
+  setBasketActiveTab(state: any, payload: any) {
+    state.activeBasketTab = payload;
+  },
+  setCumulativeBasketData(state: any, payload: any) {
+    state.cumulativeBasketData = payload;
+  },
+  setDaywiseBasketData(state: any, payload: any) {
+    state.daywiseBasketData = payload;
   },
 };
 const actions = {
@@ -406,6 +418,59 @@ const actions = {
         commit("setLoader", false);
       });
   },
+  async getCumulativeBasketReport({ commit }: any, payload: any) {
+    commit("setLoader", true);
+    await httpService
+      .getCumulativeBasketReport(payload)
+      .then(
+        (res: any) => {
+          // success -> result holds row objects, empty -> result is ["Success"]
+          if (
+            res.status == 200 &&
+            res.data.result &&
+            res.data.result.length > 0 &&
+            typeof res.data.result[0] == "object"
+          ) {
+            commit("setCumulativeBasketData", res.data.result);
+          } else {
+            commit("setCumulativeBasketData", []);
+          }
+        },
+        (err: any) => {
+          commit("setCumulativeBasketData", []);
+          errHandle.methods.errorHandle(err);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+  },
+  async getDaywiseBasketReport({ commit }: any, payload: any) {
+    commit("setLoader", true);
+    await httpService
+      .getDaywiseBasketReport(payload)
+      .then(
+        (res: any) => {
+          if (
+            res.status == 200 &&
+            res.data.result &&
+            res.data.result.length > 0 &&
+            typeof res.data.result[0] == "object"
+          ) {
+            commit("setDaywiseBasketData", res.data.result);
+          } else {
+            commit("setDaywiseBasketData", []);
+          }
+        },
+        (err: any) => {
+          commit("setDaywiseBasketData", []);
+          errHandle.methods.errorHandle(err);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+  },
   async getPaymentLogs({ commit }: any, payload: any) {
     commit("setLoader", true);
     await httpService
@@ -442,6 +507,8 @@ const getters = {
   getCurrentLoanData: (state: any) => state.currentLoanData,
   getLoader: (state: any) => state.loader,
   getPaymentLogs: (state: any) => state.paymentLogs,
+  getCumulativeBasketData: (state: any) => state.cumulativeBasketData,
+  getDaywiseBasketData: (state: any) => state.daywiseBasketData,
 };
 
 const reports = {
