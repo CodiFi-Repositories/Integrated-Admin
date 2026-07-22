@@ -1,4 +1,4 @@
-let domain = "live";
+let domain = "uat";
 
 export function env() {
   return {

@@ -39,6 +39,25 @@ export interface DaywiseBasketRow {
   sellValue: number;
 }
 
+export interface CorporateActionRequest {
+  symbol: string;
+  token: string;
+  exch: string;
+  action: string;
+  ratio?: string;
+  splitQty?: string;
+}
+
+export interface CorporateActionRecord {
+  ts: number;
+  dateTime: string;
+  symbol: string;
+  action: string;
+  ratio: string;
+  splitQty: string;
+  updatedBy: string;
+}
+
 export interface BasketReportResponse<T> {
   status: string;
   message: string | null;

@@ -14,6 +14,7 @@
     </div>
     <consolidatedBasket v-if="activeBasketTab == 0" />
     <daywiseBasket v-if="activeBasketTab == 1" />
+    <corporateAction v-if="activeBasketTab == 2" />
   </div>
 </template>
 
@@ -22,17 +23,20 @@ import { defineComponent, ref } from "vue";
 import { mapState } from "vuex";
 import consolidatedBasket from "./consolidatedBasket.vue";
 import daywiseBasket from "./daywiseBasket.vue";
+import corporateAction from "./corporateAction.vue";
 
 export default defineComponent({
   name: "researchBasket",
   components: {
     consolidatedBasket,
     daywiseBasket,
+    corporateAction,
   },
   setup() {
     const basketTabs = ref([
       { name: "Consolidated", id: 0 },
       { name: "Daywise", id: 1 },
+      { name: "Corporate Action", id: 2 },
     ]);
     return { basketTabs };
   },

@@ -116,6 +116,7 @@ export const httpService = {
   //Research Basket Report
   getCumulativeBasketReport,
   getDaywiseBasketReport,
+  updateCorporateAction,
 };
 
 function getHoliday() {
@@ -488,6 +489,13 @@ function getCumulativeBasketReport(payload: any) {
 function getDaywiseBasketReport(payload: any) {
   return AXIOS.post(
     "adrest/report/dayWiseBasketReport",
+    payload,
+    headers(true)
+  );
+}
+function updateCorporateAction(payload: any) {
+  return AXIOS.post(
+    "adrest/report/updateCorporateAction",
     payload,
     headers(true)
   );

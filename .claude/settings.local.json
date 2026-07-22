@@ -7,7 +7,10 @@
       "Bash(npx vite *)",
       "Bash(curl -s -X POST \"https://webtrade.integrated.investments/adrest/report/cumulativeBasketReport\" -H \"Content-Type: application/json\" -d '{\"userId\":\"599210\"}' --max-time 30)",
       "Bash(node repro_panel.js)",
-      "Bash(node repro_reset.js)"
+      "Bash(node repro_reset.js)",
+      "Bash(npx vue-tsc *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"typecheck exit: $?\")"
     ]
   }
 }

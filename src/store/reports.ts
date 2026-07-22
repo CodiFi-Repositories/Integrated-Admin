@@ -497,6 +497,32 @@ const actions = {
         commit("setLoader", false);
       });
   },
+  async updateCorporateAction({ commit }: any, payload: any) {
+    commit("setLoader", true);
+    let success = false;
+    await httpService
+      .updateCorporateAction(payload)
+      .then(
+        (res: any) => {
+          if (res.status == 200 && res.data.status == "Ok") {
+            success = true;
+          } else {
+            notify({
+              group: "auth",
+              type: "error",
+              title: res.data?.message || "Failed to update corporate action",
+            });
+          }
+        },
+        (err: any) => {
+          errHandle.methods.errorHandle(err);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+    return success;
+  },
 };
 const getters = {
   getUserBankDetails: (state: any) => state.userBankDetails,
