@@ -26,6 +26,7 @@ const state = {
   activeBasketTab: 0,
   cumulativeBasketData: null,
   daywiseBasketData: null,
+  corporateActionHistory: [],
 };
 
 const mutations = {
@@ -111,6 +112,9 @@ const mutations = {
   },
   setDaywiseBasketData(state: any, payload: any) {
     state.daywiseBasketData = payload;
+  },
+  setCorporateActionHistory(state: any, payload: any) {
+    state.corporateActionHistory = payload;
   },
 };
 const actions = {
@@ -504,13 +508,78 @@ const actions = {
       .updateCorporateAction(payload)
       .then(
         (res: any) => {
-          if (res.status == 200 && res.data.status == "Ok") {
+          if (
+            res.status == 200 &&
+            res.data &&
+            (res.data.status == "Ok" || /success/i.test(res.data.status || ""))
+          ) {
             success = true;
           } else {
             notify({
               group: "auth",
               type: "error",
-              title: res.data?.message || "Failed to update corporate action",
+              title:
+                res.data?.message ||
+                res.data?.status ||
+                "Failed to update corporate action",
+            });
+          }
+        },
+        (err: any) => {
+          errHandle.methods.errorHandle(err);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+    return success;
+  },
+  async getCorporateActionHistory({ commit }: any, payload: any) {
+    commit("setLoader", true);
+    let rows: any[] = [];
+    await httpService
+      .getCorporateActionHistory(payload)
+      .then(
+        (res: any) => {
+          if (
+            res.status == 200 &&
+            res.data.result &&
+            res.data.result.length > 0 &&
+            typeof res.data.result[0] == "object"
+          ) {
+            rows = res.data.result;
+          }
+        },
+        (err: any) => {
+          errHandle.methods.errorHandle(err);
+        }
+      )
+      .finally(() => {
+        commit("setLoader", false);
+      });
+    return rows;
+  },
+  async revertCorporateAction({ commit }: any, payload: any) {
+    commit("setLoader", true);
+    let success = false;
+    await httpService
+      .revertCorporateAction(payload)
+      .then(
+        (res: any) => {
+          if (
+            res.status == 200 &&
+            res.data &&
+            (res.data.status == "Ok" || /success/i.test(res.data.status || ""))
+          ) {
+            success = true;
+          } else {
+            notify({
+              group: "auth",
+              type: "error",
+              title:
+                res.data?.message ||
+                res.data?.status ||
+                "Failed to revert corporate action",
             });
           }
         },
@@ -535,6 +604,7 @@ const getters = {
   getPaymentLogs: (state: any) => state.paymentLogs,
   getCumulativeBasketData: (state: any) => state.cumulativeBasketData,
   getDaywiseBasketData: (state: any) => state.daywiseBasketData,
+  getCorporateActionHistory: (state: any) => state.corporateActionHistory,
 };
 
 const reports = {

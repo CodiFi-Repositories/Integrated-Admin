@@ -44,18 +44,22 @@ export interface CorporateActionRequest {
   token: string;
   exch: string;
   action: string;
+  effectiveDate: string;
   ratio?: string;
   splitQty?: string;
 }
 
 export interface CorporateActionRecord {
-  ts: number;
+  [key: string]: any;
+  id: number;
   dateTime: string;
   symbol: string;
   action: string;
   ratio: string;
   splitQty: string;
+  effectiveDate: string;
   updatedBy: string;
+  reverted: number;
 }
 
 export interface BasketReportResponse<T> {

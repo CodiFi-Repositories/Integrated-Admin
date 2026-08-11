@@ -117,6 +117,8 @@ export const httpService = {
   getCumulativeBasketReport,
   getDaywiseBasketReport,
   updateCorporateAction,
+  getCorporateActionHistory,
+  revertCorporateAction,
 };
 
 function getHoliday() {
@@ -496,6 +498,20 @@ function getDaywiseBasketReport(payload: any) {
 function updateCorporateAction(payload: any) {
   return AXIOS.post(
     "adrest/report/updateCorporateAction",
+    payload,
+    headers(true)
+  );
+}
+function getCorporateActionHistory(payload: any) {
+  return AXIOS.post(
+    "adrest/report/getCorporateActionHistory",
+    payload,
+    headers(true)
+  );
+}
+function revertCorporateAction(payload: any) {
+  return AXIOS.post(
+    "adrest/report/revertCorporateAction",
     payload,
     headers(true)
   );
